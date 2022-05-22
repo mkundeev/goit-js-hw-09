@@ -22,20 +22,18 @@ const options = {
 
 const calendar = flatpickr(inputDateEl, options);
 
-startBtn.disabled = true;
+startBtnUnAvailable();
 
 startBtn.addEventListener('click', onStart);
 
 
 calendar.config.onClose.push(function (selectedDates) {
-    startBtn.disabled = false;
-    inputDateEl.disabled = true;
+  inputDateUnAvailable();
     const currentDate = new Date();
 
     if (currentDate > selectedDates[0]) {
         Notiflix.Notify.failure("Please choose a date in the future");
-        startBtn.disabled = true;   
-        inputDateEl.disabled = false;
+      startBtnUnAvailable();
     };
 
     timerMs = selectedDates[0].getTime();
@@ -57,9 +55,7 @@ function onStart() {
          if ((timerMs - currentDate.getTime()) < 1000){
             clearInterval(timerId);
          };
-
-     }, 1000);
-     
+     }, 1000);  
 }
 
 
@@ -79,4 +75,14 @@ function convertMs(ms) {
 
 function addLeadingZero(value) {
     return value.toString().padStart(2, 0);
+}
+
+function startBtnUnAvailable () {
+  startBtn.disabled = true;   
+  inputDateEl.disabled = false;
+}
+
+function inputDateUnAvailable() {
+  startBtn.disabled = false;
+  inputDateEl.disabled = true;
 }
