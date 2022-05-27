@@ -20,34 +20,34 @@ refs.input.addEventListener('input', debounce(countrySearch, DEBOUNCE_DELAY))
 
 function countrySearch(event) {
     newApi.countryName = event.target.value.trim();
-    
+
     if (newApi.countryName === '') {
-       clearOutput()
-       return 
+        clearOutput()
+        return
     }
-   
+
     newApi.fetchCountries().then(data => {
         if (data.length > 10) {
             Notiflix.Notify.info("Too many matches found. Please enter a more specific name.")
             clearOutput()
-        } else if (data.length <= 10 && data.length>1) {
+        } else if (data.length <= 10 && data.length > 1) {
             creatCountryList(data);
         } else if (data.length === 1) {
-             creatCountryInfo(...data); 
-         } else
-          rejected
+            creatCountryInfo(...data);
+        } else
+            rejected
     }).catch(error => {
         Notiflix.Notify.failure("Oops, there is no country with that name")
         clearOutput()
     })
-  
+
 }
 
 function creatCountryList(data) {
     refs.countryList.innerHTML = countryListTemplate(data)
     clearCountryInfo()
 }
-       
+
 function creatCountryInfo(data) {
     refs.countryInfo.innerHTML = countryInfoTemplate(data);
     clearCountryList()
@@ -63,5 +63,5 @@ function clearCountryInfo() {
 
 function clearOutput() {
     clearCountryList()
-    clearCountryInfo()  
+    clearCountryInfo()
 }
