@@ -16,13 +16,16 @@ const refs = {
 
 const newApi = new NewApi();
 
+refs.input.addEventListener('input', debounce(countrySearch, DEBOUNCE_DELAY))
 
-
-refs.input.addEventListener('input', debounce(getName, 300))
-
-function getName(event) {
-    newApi.countryName =event.target.value;
-
+function countrySearch(event) {
+    newApi.countryName = event.target.value.trim();
+    
+    if (newApi.countryName === '') {
+       clearOutput()
+       return 
+    }
+   
     newApi.fetchCountries().then(data => {
         if (data.length > 10) {
             Notiflix.Notify.info("Too many matches found. Please enter a more specific name.")
